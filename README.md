@@ -1,9 +1,9 @@
 # Proyecto 1 — Planificación de Tareas
 
 Integrantes:
-- Nombre Apellido
-- Nombre Apellido
-- Nombre Apellido
+- Jorge Arriola
+- Joaquin Moncada
+- Catalina Quiñones
 
 ## Cómo ejecutar
 1. Crear virtual environment: `python -m venv .venv`
