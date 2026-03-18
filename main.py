@@ -27,7 +27,7 @@ def leer_tareas():
                 "id":id_t,
                 "duracion":int(dur),
                 "categoria":cat })
-        return tareas
+    return tareas
 
 def leer_recursos():
     recursos=[]
@@ -40,7 +40,7 @@ def leer_recursos():
                 "id": id_r,
                 "categorias": categorias,
                 "tiempo_disponible": 0})
-            return recursos   
+    return recursos   
         
 def planificar(tareas, recursos):
     tareas.sort(key=lambda x: -x["duracion"])
@@ -50,6 +50,8 @@ def planificar(tareas, recursos):
             r for r in recursos
             if tarea["categoria"] in r["categorias"]
         ]
+        if not compatibles:
+            raise Exception(f"No hay recurso compatible para {tarea['id']}")
         recurso = min(compatibles, key=lambda r: r["tiempo_disponible"])
         inicio = recurso["tiempo_disponible"]
         fin = inicio + tarea["duracion"]
