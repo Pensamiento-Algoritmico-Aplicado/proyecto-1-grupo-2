@@ -27,7 +27,7 @@ def main():
 
 def leer_tareas():
     tareas = []
-    with open("tareas.txt") as f:
+    with open("tareas_EP.txt") as f:
         for line in f:
             id_t,dur,cat = line.strip().split(",")
             tareas.append({
@@ -38,7 +38,7 @@ def leer_tareas():
 
 def leer_recursos():
     recursos=[]
-    with open("recursos.txt") as f:
+    with open("recursos_EP.txt") as f:
         for line in f:
             partes = line.strip().split(",")
             id_r = partes[0]
