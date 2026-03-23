@@ -18,8 +18,10 @@ def main():
         print("Cumple el makespan objetivo")
     else:
         print("No cumple el makespan objetivo")
-
-    print("Cronograma generado en output.txt")
+    print("\nCronograma:")
+    for t in cronograma:
+        print(t)
+    print("\nCronograma generado en output.txt")
    
 
 
@@ -77,4 +79,4 @@ def escribir_output(cronograma):
             f.write(f"{t[0]},{t[1]},{t[2]},{t[3]}\n")
 
 
-if __name__ == "__main__": main()
+if __name__ == "__main__": main() 
