@@ -43,7 +43,7 @@ def leer_recursos():
     return recursos   
         
 def planificar(tareas, recursos):
-    tareas.sort(key=lambda x: -x["duracion"])
+    tareas.sort(key=lambda x: (cantidad_recursos_compatibles(x, recursos), -x["duracion"]))
     cronograma = []
     for tarea in tareas:
         compatibles = [
@@ -59,6 +59,9 @@ def planificar(tareas, recursos):
         recurso["tiempo_disponible"] = fin
 
     return cronograma
+
+def cantidad_recursos_compatibles(tarea, recursos):
+    return sum(1 for r in recursos if tarea["categoria"] in r["categorias"])
 
 def escribir_output(cronograma):
     with open("output.txt", "w") as f:
