@@ -5,17 +5,23 @@ def main():
         print("Uso: python main.py <makespan>")
         return
 
-    makespan = sys.argv[1]
-    print("Makespan objetivo:", makespan)
+    makespan_objetivo = int(sys.argv[1])
+    print("Makespan objetivo:", makespan_objetivo)
 
     tareas= leer_tareas()
     recursos= leer_recursos()
     cronograma= planificar(tareas, recursos)
     escribir_output(cronograma)
+    makespan_real=calcular_makespan(cronograma)
+    print("Makespan obtenido:", makespan_real)
 
-    print("Tareas:",tareas)
-    print("Recursos:", recursos)
+    if makespan_real <= makespan_objetivo:
+        print("Cumple el makespan objetivo")
+    else:
+        print("No cumple el makespan objetivo")
+
     print("Cronograma generado en output.txt")
+   
 
 
 def leer_tareas():
@@ -43,7 +49,7 @@ def leer_recursos():
     return recursos   
         
 def planificar(tareas, recursos):
-    tareas.sort(key=lambda x: (cantidad_recursos_compatibles(x, recursos), -x["duracion"]))
+    tareas.sort(key=lambda x: -x["duracion"])
     cronograma = []
     for tarea in tareas:
         compatibles = [
@@ -59,6 +65,9 @@ def planificar(tareas, recursos):
         recurso["tiempo_disponible"] = fin
 
     return cronograma
+
+def calcular_makespan(cronograma):
+    return max(fin for _, _, _, fin in cronograma)
 
 def cantidad_recursos_compatibles(tarea, recursos):
     return sum(1 for r in recursos if tarea["categoria"] in r["categorias"])
