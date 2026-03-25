@@ -1,4 +1,5 @@
 import sys
+import random
 def main():
     if len(sys.argv) < 2:
         print("Uso: python main.py <makespan>")
@@ -22,8 +23,6 @@ def main():
     for t in cronograma:
         print(t)
     print("\nCronograma generado en output.txt")
-   
-
 
 def leer_tareas():
     tareas = []
@@ -49,23 +48,55 @@ def leer_recursos():
                 "tiempo_disponible": 0})
     return recursos   
         
-def planificar(tareas, recursos):
-    tareas.sort(key=lambda x: -x["duracion"])
-    cronograma = []
-    for tarea in tareas:
-        compatibles = [
-            r for r in recursos
-            if tarea["categoria"] in r["categorias"]
-        ]
-        if not compatibles:
-            raise Exception(f"No hay recurso compatible para {tarea['id']}")
-        recurso = min(compatibles, key=lambda r: r["tiempo_disponible"])
-        inicio = recurso["tiempo_disponible"]
-        fin = inicio + tarea["duracion"]
-        cronograma.append((tarea["id"], recurso["id"], inicio, fin))
-        recurso["tiempo_disponible"] = fin
+def planificar(tareas, recursos, intentos=100):
+    mejor_cronograma = None
+    mejor_makespan = float("inf")
 
-    return cronograma
+    for _ in range(intentos):
+        tareas_copia = tareas[:]
+        recursos_copia = [
+            {"id": r["id"], "categorias": r["categorias"][:], "tiempo_disponible": 0}
+            for r in recursos
+        ]
+        tareas_copia.sort(
+            key=lambda x: (
+                cantidad_recursos_compatibles(x, recursos),
+                -x["duracion"]
+            )
+        )
+        if random.random() < 0.3:
+            random.shuffle(tareas_copia)
+
+        cronograma = []
+
+        for tarea in tareas_copia:
+            compatibles = [
+                r for r in recursos_copia
+                if tarea["categoria"] in r["categorias"]
+            ]
+
+            if not compatibles:
+                raise Exception(f"No hay recurso compatible para {tarea['id']}")
+            
+            recurso = min(
+                compatibles,
+                key=lambda r: r["tiempo_disponible"] + tarea["duracion"]
+            )
+            inicio = recurso["tiempo_disponible"]
+            fin = inicio + tarea["duracion"]
+
+            cronograma.append((tarea["id"], recurso["id"], inicio, fin))
+
+            recurso["tiempo_disponible"] = fin
+
+        makespan = calcular_makespan(cronograma)
+
+        if makespan < mejor_makespan:
+            mejor_makespan = makespan
+            mejor_cronograma = cronograma
+
+    return mejor_cronograma
+
 
 def calcular_makespan(cronograma):
     return max(fin for _, _, _, fin in cronograma)
