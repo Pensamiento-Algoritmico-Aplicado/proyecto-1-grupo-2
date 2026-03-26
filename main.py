@@ -1,19 +1,22 @@
 import sys
 import random
+import time
 def main():
     if len(sys.argv) < 2:
         print("Uso: python main.py <makespan>")
         return
-
     makespan_objetivo = int(sys.argv[1])
     print("Makespan objetivo:", makespan_objetivo)
-
     tareas= leer_tareas()
     recursos= leer_recursos()
+    inicio = time.perf_counter()
     cronograma= planificar(tareas, recursos)
+    fin = time.perf_counter()
+    tiempo_ejecucion = fin - inicio
     escribir_output(cronograma)
     makespan_real=calcular_makespan(cronograma)
     print("Makespan obtenido:", makespan_real)
+    print(f"Tiempo de ejecución: {tiempo_ejecucion:.6f} segundos")
 
     if makespan_real <= makespan_objetivo:
         print("Cumple el makespan objetivo")
