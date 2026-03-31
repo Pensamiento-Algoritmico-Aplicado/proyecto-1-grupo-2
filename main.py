@@ -132,8 +132,7 @@ def planificar(tareas, recursos):
 
         recurso = min(
             compatibles,
-            key=lambda r: r["tiempo_disponible"]
-        )
+            key=lambda r: (r["tiempo_disponible"], len(r["categorias"])))
 
         inicio = recurso["tiempo_disponible"]
         fin = inicio + tarea["duracion"]
