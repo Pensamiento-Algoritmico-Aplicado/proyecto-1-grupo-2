@@ -1,14 +1,17 @@
 import sys
 import random
 import time
+<<<<<<< HEAD
 
+=======
+>>>>>>> f2ce4e4abef8a9a437cb7d3758e85066aebc00b6
 def main():
     if len(sys.argv) < 2:
         print("Uso: python main.py <makespan>")
         return
-
     makespan_objetivo = int(sys.argv[1])
     print("Makespan objetivo:", makespan_objetivo)
+<<<<<<< HEAD
 
     tareas = leer_tareas("tareas.txt")
     recursos = leer_recursos("recursos.txt")
@@ -16,11 +19,23 @@ def main():
 
     cronograma = planificar(tareas, recursos)
     fin=time.time()
+=======
+    tareas= leer_tareas()
+    recursos= leer_recursos()
+    inicio = time.perf_counter()
+    cronograma= planificar(tareas, recursos)
+    fin = time.perf_counter()
+    tiempo_ejecucion = fin - inicio
+>>>>>>> f2ce4e4abef8a9a437cb7d3758e85066aebc00b6
     escribir_output(cronograma)
 
     makespan_real = calcular_makespan(cronograma)
     print("Makespan obtenido:", makespan_real)
+<<<<<<< HEAD
     print("Tiempo de ejecución:", round(fin - inicio, 2), "segundos")
+=======
+    print(f"Tiempo de ejecución: {tiempo_ejecucion:.6f} segundos")
+>>>>>>> f2ce4e4abef8a9a437cb7d3758e85066aebc00b6
 
     if makespan_real <= makespan_objetivo:
         print("Cumple el makespan objetivo")
